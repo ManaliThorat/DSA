@@ -1,6 +1,9 @@
 #include "stack.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
+
 stack* create(int elementsSize,int size){
 	stack* Stack;
 	Stack = malloc(sizeof(stack)*1);
@@ -11,31 +14,32 @@ stack* create(int elementsSize,int size){
 	return Stack;
 }
 int isFull(stack *s){
-	return (s->top+1) >= s->size;
+	if((s->top+1) >= s->size)
+		return 1;
+	return 0;
 }
 
 int push(stack* Stack,void* elementToPush){
 	void* address;
 	if(isFull(Stack))
 		return 0;
+
 	address = Stack->elements+(++(Stack->top)*Stack->elementsSize);
-	*(char*)address = *(char*)elementToPush;
-	// memcpy(address,elementToPush, Stack->elementsSize);
+	memcpy(address,elementToPush, Stack->elementsSize);
 	return 1;
 }
 int isEmpty(stack* Stack){
-	return Stack->top == -1;
+	if(Stack->top == -1)
+		return 1;
+	return 0;
 }
 
 void* pop(stack* Stack){
-	int* a;
 	if(isEmpty(Stack))
 		return 0;
-	a = Stack->elements + ((Stack->top--)*Stack->elementsSize);
-	return a;
+	return Stack->elements + ((Stack->top--)*Stack->elementsSize);
 }
 void* top(stack* Stack){
-	void* data = Stack->elements;
-	return Stack->elements + ((Stack->top)*Stack->elementsSize);
-}
+void* data = Stack->elements;
+	return Stack->elements + ((Stack->top)*Stack->elementsSize);}
 

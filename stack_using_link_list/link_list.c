@@ -1,18 +1,5 @@
 #include "link_list.h"
 #include <stdlib.h>
-
-// List* create(){
-//         List *list = malloc(sizeof(List));
-//         list->length = 0;
-//         list->head = NULL;
-//         return list;
-// }
-// Node* createNode(void* previous,void* next){
-//         Node* node = malloc(sizeof(Node));
-//         node->previous = previous;
-//         node->next = next;
-//         return node;
-// }
 Node* createNode(void* previous,void* next){
         Node* node = calloc(1,sizeof(Node));
         node->previous = previous;
