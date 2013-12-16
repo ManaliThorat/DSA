@@ -15,7 +15,6 @@ int compareFloat(void* key,void* element){
 int compareDouble(void* key,void* element){
         return ( *(double*)key -  *(double*)element );
 }
-
 int compareString(void* key,void* element){
         return strcmp( *(String*)key, *(String*)element );
 }

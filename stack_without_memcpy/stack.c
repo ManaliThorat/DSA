@@ -1,65 +1,45 @@
 #include "stack.h"
+#include <string.h>
 #include <stdlib.h>
-Node* createNode(void* previous,void* next){
-        Node* node = calloc(1,sizeof(Node));
-        node->previous = previous;
-        node->next = next;
-        return node;
+stack* create(int elementsSize,int size){
+    stack* Stack;
+    Stack = malloc(sizeof(stack)*1);
+    Stack->elementsSize =elementsSize;
+    Stack->size = size;
+    Stack->top = -1;
+    Stack->elements = calloc(Stack->size,Stack->elementsSize);
+    return Stack;
 }
-List* create(){
-        List* list = calloc(1,sizeof(List));
-        list->length = 0;
-        list->head = NULL;
-        return list;
+int isFull(stack *s){
+    return (s->top+1) >= s->size;
 }
-int add(List* dList,int index,void* element){
-        int i=1;
-        Node* nodeToAdd = createNode(NULL,NULL);
-        Node *previousNode;
-        Node *nextNode = NULL;
-        if(index > dList->length) return 0;
-        nodeToAdd->data = element;
-        if(dList->head == NULL){
-                dList->head = nodeToAdd;
-                dList->length++;
-                return 1;
-        }
-        previousNode = dList->head;
-        while(i < index){
-                previousNode = previousNode->next;
-                if(previousNode!= NULL)
-                    nextNode = previousNode->next;
-                i++;
-        }
-        previousNode->next = nodeToAdd;
-        if(nextNode != NULL)
-            nextNode->previous = nodeToAdd;
-        nodeToAdd->previous = previousNode;
-        nodeToAdd->next = nextNode;
-        dList->length++;
-        return 1;
+
+void copy(char* dest,char* src,int typeSize){
+    int i;
+    for(i = 0;i<typeSize;i++)
+        dest[i] = src[i];
 }
-void* removeElement(List* list,int index){
-        int i;
-        Node *head;
-        void* data;
-        if(index > list->length-1)
-                return 0;
-        head = list->head;
-        for(i=0;i < index ;i++){
-            head = head->next;
-        }
-        data = head->data;
-        if(i==0){   
-            list->length--;
-        }
-        if(i==list->length-1){
-            head->previous = NULL;
-            list->length--;
-        }
-        head->previous = head->next;
-        head->next = head->previous;
-    free(head);
-    list->length--;
-    return data;
-};
+int push(stack* Stack,void* elementToPush){
+    void* address;
+    if(isFull(Stack))
+        return 0;
+    address = Stack->elements+(++(Stack->top)*Stack->elementsSize);
+    copy(address,elementToPush, Stack->elementsSize);
+    return 1;
+}
+int isEmpty(stack* Stack){
+    return Stack->top == -1;
+}
+
+void* pop(stack* Stack){
+    int* a;
+    if(isEmpty(Stack))
+        return 0;
+    a = Stack->elements + ((Stack->top--)*Stack->elementsSize);
+    return a;
+}
+void* top(stack* Stack){
+    void* data = Stack->elements;
+    return Stack->elements + ((Stack->top)*Stack->elementsSize);
+}
+

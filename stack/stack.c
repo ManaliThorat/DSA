@@ -20,7 +20,7 @@ int push(stack* Stack,void* elementToPush){
 		return 0;
 	address = Stack->elements+(++(Stack->top)*Stack->elementsSize);
 	*(char*)address = *(char*)elementToPush;
-	// memcpy(address,elementToPush, Stack->elementsSize);
+	memcpy(address,elementToPush, Stack->elementsSize);
 	return 1;
 }
 int isEmpty(stack* Stack){

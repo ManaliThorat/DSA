@@ -1,85 +1,160 @@
 #include "testUtils.h"
 #include "stack.h"
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-void test_create_node(){
-        Node expected = {NULL,(void*)5,NULL};
-        Node *actual = createNode(NULL,NULL);
-        ASSERT(expected.next == actual->next);
-        ASSERT(expected.previous == actual->previous);
+int areEqual(stack* src,stack* expected){
+    int res = (src->elementsSize == expected->elementsSize)
+            && (src->size == expected->size)
+            && (src->top == expected->top);
+            if(!res)
+                return res;
+            return 0==memcmp(src->elements, expected->elements, src->size*src->elementsSize);           
 }
-void test_add_data_to_empty_list(){
-        List* list = create();
-        int num = 5;
-        int res = add(list, 0, &num);
-        ASSERT(1 == res);
+void test_for_creating_stack(){
+    int expectedArr[2]={0,0};
+    stack expected = {expectedArr,-1,4,2};
+    stack* src = create(sizeof(int),2);
+    ASSERT(areEqual(src, &expected));
 }
-void test_add_data_to_list(){
-        List* list = create();
-        int num = 5;
-        int num1 = 6;
-        int res,res1;
-        res = add(list, 0, &num);
-        ASSERT(1 == res);
-        res1 = add(list, 1, &num1);
-        ASSERT(1 == res);
+
+void test_for_pushing_int_element_in_stack(){
+    stack* actual = create(sizeof(int),2);
+    int value = 1;
+    int res = push(actual,&value);
+    int* data = (int*)actual->elements;
+    ASSERT(data[0]==1);
+    free(actual);   
 }
-void test_add_records_at_middle_of_list(){
-        List* list = create();
-        int num = 5;
-        int num1 = 6;
-        int num2 = 5;
-        int num3 = 6;
-        int res,res1,res2,res3;
-        res = add(list, 0, &num);
-        ASSERT(1 == res);
-        res1 = add(list, 1, &num1);
-        ASSERT(1 == res1);
-        res2 = add(list, 1, &num2);
-        ASSERT(1 == res2);
-        res3 = add(list, 2, &num3);
-        ASSERT(1 == res3);
+void test_for_pushing_float_element_in_stack(){
+    stack* actual = create(sizeof(float),2);
+    float value = 1.0;
+    int res = push(actual,&value);
+    float* data = (float*)actual->elements;
+    ASSERT(data[0]==1.0);
+    free(actual);   
 }
-void test_delete_first_element_in_list(){
-     List* list = create();
-        void* result;
-        int num = 5;
-        int res = add(list, 0, &num);
-        ASSERT(1 == res);
-        result = removeElement(list,0);
-        printf("%d\n",*(int*)result );
-        ASSERT(5 == *(int*)result);
+void test_for_pushing_char_element_in_stack(){
+    stack* actual = create(sizeof(char),2);
+    char value = 'm';
+    int res = push(actual,&value);
+    char* data = (char*)actual->elements;
+    ASSERT(data[0]=='m');
+    free(actual);   
 }
-// void test_delete_middle_element_in_list(){
-//     List* list = create();
-//         int num = 5;
-//         int num1 = 6;
-//         int num2 = 5;
-//         void* result;
-//         int res,res1,res2,res3;
-//         res = add(list, 0, &num);
-//         ASSERT(1 == res);
-//         res1 = add(list, 1, &num1);
-//         ASSERT(1 == res1);
-//         res2 = add(list, 1, &num2);
-//         ASSERT(1 == res2);
-//         result = removeElement(list,1);
-//         printf("%d\n",*(int*)result );
-//         ASSERT(6 == *(int*)result);
-// }
-void test_delete_3_end_element_in_list(){
-    List* list = create();
-        int num = 5;
-        int num1 = 6;
-        int num2 = 7;
-        void* result;
-        int res,res1,res2,res3;
-        res = add(list,0,&num);
-        ASSERT(1 == res);
-        res1 = add(list,1,&num1);
-        ASSERT(1 == res1);
-        res2 = add(list,2,&num2);
-        ASSERT(1 == res2);
-        result = removeElement(list,2);
-        ASSERT(7 == *(int*)result);
+
+void test_for_pushing_double_element_in_stack(){
+    stack* actual = create(sizeof(double),2);
+    double value = 2.000000;
+    double res = push(actual,&value);
+    double* data = (double*)actual->elements;
+    ASSERT(data[0]==2.000000);
+    free(actual);   
+}
+
+void test_for_pushing_String_element_in_stack(){
+    stack* actual = create(sizeof(String),2);
+    String value = "manali";
+    int res = push(actual,&value);
+    String* data = (String*)actual->elements;
+    ASSERT(0 == strcmp((char*)data,value));
+    free(actual);   
+}
+
+void test_for_poping_int_element_from_stack(){
+    stack* actual = create(sizeof(int),5);
+    int* data = actual->elements;
+    data[0] = 1;
+    data[1] = 2;
+    data[2] = 3;
+    data[3] = 4;
+    data[4] = 5;
+    actual->top = 4;
+    ASSERT(5 ==*(int*)pop(actual));
+}
+void test_for_poping_float_element_from_stack(){
+    stack* actual = create(sizeof(float),3);
+    float* data = actual->elements;
+    data[0] = 1.0;
+    data[1] = 2.0;
+    data[2] = 3.0;
+    actual->top = 2;
+    ASSERT(3.0 ==*(float*)pop(actual));
+}
+void test_for_poping_char_element_from_stack(){
+    stack* actual = create(sizeof(char),3);
+    char* data = actual->elements;
+    data[0] = 'm';
+    data[1] = 'a';
+    data[2] = 'n';
+    actual->top = 2;
+    ASSERT('n' ==*(char*)pop(actual));
+    ASSERT(1==actual->top);
+}
+void test_for_poping_double_element_from_stack(){
+    stack* actual = create(sizeof(double),3);
+    double* data = actual->elements;
+    data[0] = 1.000000;
+    data[1] = 3.000000;
+    data[2] = 2.000000;
+    actual->top = 2;
+    ASSERT(2.000000 ==*(double*)pop(actual));
+    ASSERT(1==actual->top);
+
+}
+void test_for_poping_string_element_from_stack(){
+    stack* actual = create(sizeof(String),3);
+    String* data = actual->elements;
+    strcpy(data[0],"manali");
+    strcpy(data[1],"shweta");
+    strcpy(data[2],"kajal");
+    actual->top = 2;
+    ASSERT(0 == strcmp("kajal",*(String*)pop(actual)));
+}
+void test_gives_top_int_element_of_stack(){
+    stack* actual = create(sizeof(int),3);
+    int* data = actual->elements;
+    data[0] = 1;
+    data[1] = 2;
+    data[2] = 3;
+    actual->top = 2;
+    ASSERT(3 ==*(int*)top(actual));
+}
+void test_gives_top_float_element_of_stack(){
+    stack* actual = create(sizeof(float),3);
+    float* data = actual->elements;
+    data[0] = 1.0;
+    data[1] = 2.0;
+    data[2] = 3.0;
+    actual->top = 2;
+    ASSERT(3.0 ==*(float*)top(actual));
+}
+void test_gives_top_double_element_of_stack(){
+    stack* actual = create(sizeof(double),3);
+    double* data = actual->elements;
+    data[0] = 1.000000;
+    data[1] = 2.000000;
+    data[2] = 3.000000;
+    actual->top = 2;
+    ASSERT(3.000000 ==*(double*)top(actual));
+
+}
+
+void test_gives_top_char_element_of_stack(){
+    stack* actual = create(sizeof(char),3);
+    char* data = actual->elements;
+    data[0] = 'm';
+    data[1] = 'a';
+    data[2] = 'n';
+    actual->top = 2;
+    ASSERT('n' ==*(char*)top(actual));
+}
+void test_gives_top_string_element_of_stack(){
+    stack* actual = create(sizeof(String),3);
+    String* data = actual->elements;
+    strcpy(data[0],"manali");
+    strcpy(data[1],"shweta");
+    strcpy(data[2],"kajal");
+    actual->top = 2;
+    ASSERT(0 == strcmp("kajal",*(String*)top(actual)));
 }
