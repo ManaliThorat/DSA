@@ -2,13 +2,13 @@
 #include <stdlib.h>
 
 int push(List* list,void* element){
-		int result;
+	int result;
         int index = list->length-1;
- 		result = add(list,index,element);
- 		return result;       
+ 	result = add(list,index,element);
+ 	return result;       
 }
 void* pop(List* list){
-		void* result;
+	void* result;
         int index = list->length-1;
         result = removeElement(list,index);
         return result;

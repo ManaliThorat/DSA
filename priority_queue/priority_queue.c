@@ -1,26 +1,26 @@
 #include "priority_queue.h"
 #include <stdlib.h>
-#include <stdio.h>
-list* create(){
-    list *queue = calloc(sizeof(list),1);
+
+Queue* create(){
+    Queue *queue = calloc(sizeof(Queue),1);
     return queue;
 }
-int frontInsert(Queue *process,list *queue){
+int addAtStart(Node *node,Queue *queue){
     if(queue->front == NULL)
-        process->next = NULL;
-    else process->next = queue->front;
-    queue->front = process;
+        node->next = NULL;
+    else node->next = queue->front;
+    queue->front = node;
     queue->length++;
     return 1;        
 }
-int insert(list *queue,Queue *q,compFunc* compare){
-    Queue *previous,*next,*temp;
+int insert(Queue *queue,Node *q,compFunc* compare){
+    Node *previous,*next,*temp;
     int result;
     temp = queue->front;
     if(queue->length == 0)                
-        return frontInsert(q,queue);
+        return addAtStart(q,queue);
            if(compare(&q->priority,&temp->priority) < 0) 
-        return frontInsert(q,queue);
+        return addAtStart(q,queue);
     while(temp != NULL){
         previous = temp;
         next = temp->next;
@@ -33,7 +33,7 @@ int insert(list *queue,Queue *q,compFunc* compare){
     };
     return 0;
 }
-int removeElement(list *queue){
+int removeElement(Queue *queue){
         if(queue->length == 0) return 0;
         queue->front = queue->front->next;
         queue->length--;

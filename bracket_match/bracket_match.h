@@ -1,2 +1,1 @@
-
-int bracketMatch(char* str);
+int doBracketsMatch(char* str);

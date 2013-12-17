@@ -35,8 +35,8 @@ int compareFloat( void* a,  void* b){
 int compareChar( void* a,  void* b){
     return (*(char*)a - *(char*)b);
 }
-int compareString(void* key,void* element){
-    return strcmp( *(String*)key, *(String*)element );
+int compareString(void* a,void* b){
+    return strcmp(*(String*)a,*(String*)b);
 }
 void test_1_sorting_an_array_of_integers(){
     int expected[] = {1,2,3,4};
@@ -57,15 +57,16 @@ void test_3_sorting_an_array_of_float(){
     ASSERT(0 == memcmp(expected, actual, sizeof(expected)));
 }
 void test_4_sorting_an_array_of_character(){
-    char expected[] = {'d','b','c','a'};
-    char actual[] = {'a','b','c','d'};
+    char expected[] = {'a','b','c','d'};
+    char actual[] = {'d','b','c','a'};
     isort(actual, 4, sizeof(char), compareChar);
     ASSERT(0 == memcmp(expected, actual, sizeof(expected)));
 }
 
 void test_5_sorting_an_array_of_string(){
-    String expected[] = {"d","b","c","a"};
-    String actual[] = {"a","b","c","d"};
+    String expected[] = {"a","b","c","d"};
+    String actual[] = {"d","b","c","a"};
     isort(actual, 4, sizeof(String), compareString);
+    printf("%c\n",*(char*)expected );
     ASSERT(0 == memcmp(expected, actual, sizeof(expected)));
 }

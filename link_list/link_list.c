@@ -51,11 +51,11 @@ int removeElement(List* list,int index){
         for(i=0;i<index;i++){
                 head = head->next;
         }
-        if(i==0){   
+        if(index==0){   
                 list->length--;
                 return 1;
         }
-        if(i==list->length-1){
+        if(index==list->length-1){
                 head->previous = NULL;
                 list->length--;
                 return 1;

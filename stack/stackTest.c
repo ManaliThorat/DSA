@@ -62,99 +62,89 @@ void test_for_pushing_String_element_in_stack(){
 }
 
 void test_for_poping_int_element_from_stack(){
-	stack* actual = create(sizeof(int),5);
-	int* data = actual->elements;
-	data[0] = 1;
-	data[1] = 2;
-	data[2] = 3;
-	data[3] = 4;
-	data[4] = 5;
-	actual->top = 4;
-	ASSERT(5 ==*(int*)pop(actual));
+    int data[] = {1,2,3,4,5};
+    stack* actual = create(sizeof(int),5);
+    push(actual,&data[0]);
+    push(actual,&data[1]);
+    push(actual,&data[2]);
+    push(actual,&data[3]);
+    push(actual,&data[4]);
+    ASSERT(5 ==*(int*)pop(actual));
 }
 void test_for_poping_float_element_from_stack(){
-	stack* actual = create(sizeof(float),3);
-	float* data = actual->elements;
-	data[0] = 1.0;
-	data[1] = 2.0;
-	data[2] = 3.0;
-	actual->top = 2;
-	ASSERT(3.0 ==*(float*)pop(actual));
+    float data[] = {1.0,2.0,3.0};
+    stack* actual = create(sizeof(float),3);
+    push(actual,&data[0]);
+    push(actual,&data[1]);
+    push(actual,&data[2]);
+    ASSERT(3.0 ==*(float*)pop(actual));
 }
 void test_for_poping_char_element_from_stack(){
-	stack* actual = create(sizeof(char),3);
-	char* data = actual->elements;
-	data[0] = 'm';
-	data[1] = 'a';
-	data[2] = 'n';
-	actual->top = 2;
-	ASSERT('n' ==*(char*)pop(actual));
-	ASSERT(1==actual->top);
+    char data[] = {'m','a','n'};
+    stack* actual = create(sizeof(char),3);
+    push(actual,&data[0]);
+    push(actual,&data[1]);
+    push(actual,&data[2]);
+    ASSERT('n' ==*(char*)pop(actual));
+    ASSERT(1==actual->top);
 }
 void test_for_poping_double_element_from_stack(){
-	stack* actual = create(sizeof(double),3);
-	double* data = actual->elements;
-	data[0] = 1.000000;
-	data[1] = 3.000000;
-	data[2] = 2.000000;
-	actual->top = 2;
-	ASSERT(2.000000 ==*(double*)pop(actual));
-	ASSERT(1==actual->top);
+    double data[] = {0.000000,1.000000,2.000000};
+    stack* actual = create(sizeof(double),3);
+    push(actual,&data[0]);
+    push(actual,&data[1]);
+    push(actual,&data[2]);
+    ASSERT(2.000000 ==*(double*)pop(actual));
+    ASSERT(1==actual->top);
 
 }
 void test_for_poping_string_element_from_stack(){
-	stack* actual = create(sizeof(String),3);
-	String* data = actual->elements;
-	strcpy(data[0],"manali");
-	strcpy(data[1],"shweta");
-	strcpy(data[2],"kajal");
-	actual->top = 2;
-	ASSERT(0 == strcmp("kajal",*(String*)pop(actual)));
+    String data[] = {"manali","kajal","samiksha"};
+    stack* actual = create(sizeof(String),3);
+    push(actual,&data[0]);
+    push(actual,&data[1]);
+    push(actual,&data[2]);
+    ASSERT(0 == strcmp("samiksha",*(String*)pop(actual)));
 }
 void test_gives_top_int_element_of_stack(){
-	stack* actual = create(sizeof(int),3);
-	int* data = actual->elements;
-	data[0] = 1;
-	data[1] = 2;
-	data[2] = 3;
-	actual->top = 2;
-	ASSERT(3 ==*(int*)top(actual));
+    int data[] = {1,2,3};
+    stack* actual = create(sizeof(int),3);
+    push(actual,&data[0]);
+    push(actual,&data[1]);
+    push(actual,&data[2]);
+    ASSERT(3 ==*(int*)top(actual));
 }
 void test_gives_top_float_element_of_stack(){
-	stack* actual = create(sizeof(float),3);
-	float* data = actual->elements;
-	data[0] = 1.0;
-	data[1] = 2.0;
-	data[2] = 3.0;
-	actual->top = 2;
-	ASSERT(3.0 ==*(float*)top(actual));
+    float data[] = {1.0,2.0,3.0};
+    stack* actual = create(sizeof(float),3);
+    push(actual,&data[0]);
+    push(actual,&data[1]);
+    push(actual,&data[2]);
+    ASSERT(3.0 ==*(float*)top(actual));
 }
 void test_gives_top_double_element_of_stack(){
-	stack* actual = create(sizeof(double),3);
-	double* data = actual->elements;
-	data[0] = 1.000000;
-	data[1] = 2.000000;
-	data[2] = 3.000000;
-	actual->top = 2;
-	ASSERT(3.000000 ==*(double*)top(actual));
+    double data[] = {1.000000,2.000000,3.000000};
+    stack* actual = create(sizeof(double),3);
+    push(actual,&data[0]);
+    push(actual,&data[1]);
+    push(actual,&data[2]);
+    ASSERT(3.000000 ==*(double*)top(actual));
 
 }
 
 void test_gives_top_char_element_of_stack(){
-	stack* actual = create(sizeof(char),3);
-	char* data = actual->elements;
-	data[0] = 'm';
-	data[1] = 'a';
-	data[2] = 'n';
-	actual->top = 2;
-	ASSERT('n' ==*(char*)top(actual));
+   char data[] = {'m','a','n'};
+    stack* actual = create(sizeof(char),3);
+    push(actual,&data[0]);
+    push(actual,&data[1]);
+    push(actual,&data[2]);
+    ASSERT('n' ==*(char*)top(actual));
 }
 void test_gives_top_string_element_of_stack(){
-	stack* actual = create(sizeof(String),3);
-	String* data = actual->elements;
-	strcpy(data[0],"manali");
-	strcpy(data[1],"shweta");
-	strcpy(data[2],"kajal");
-	actual->top = 2;
-	ASSERT(0 == strcmp("kajal",*(String*)top(actual)));
+   String data[] = {"manali","samiksha","kajal"};
+    stack* actual = create(sizeof(String),3);
+    push(actual,&data[0]);
+    push(actual,&data[1]);
+    push(actual,&data[2]);
+    ASSERT(0 == strcmp("kajal",*(String*)top(actual)));
 }

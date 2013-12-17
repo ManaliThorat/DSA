@@ -1,14 +1,14 @@
 typedef char string[256];
-typedef struct queue{
+typedef struct Node{
     void* data;
     int priority;
-    struct queue *next;
-}Queue;
+    struct Node *next;
+}Node;
 typedef struct{
-    Queue *front;
+    Node *front;
     int length;
-}list;
-list* create();
-typedef int compFunc(void* , void*);
-int insert(list *queue,Queue *q,compFunc* compare);
-int removeElement(list* queue);
+}Queue;
+Queue* create();
+typedef int compFunc(void* a, void* b);
+int insert(Queue *queue,Node *q,compFunc* compare);
+int removeElement(Queue* queue);

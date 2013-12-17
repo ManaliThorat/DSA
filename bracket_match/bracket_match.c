@@ -9,9 +9,8 @@ int isMatch(stack* Stack,char input){
 		|| (res=='{' && input=='}'))
 		return 1;
 	return 0;		
-
 }
-int bracketMatch(String str){
+int doBracketsMatch(String str){
 	stack* Stack;
 	int counter;
 	Stack = create(sizeof(char),strlen(str));
