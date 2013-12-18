@@ -41,35 +41,36 @@ void test_4_enqueues_an_float_element_in_empty_queue_and_gives_back_that_element
 };
 
 
-// void test_6_enqueues_an_double_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
-//    void* queue = createQueue();
-//     double value[] = {10.000000,15.000000};
-//     ASSERT(1 == enqueue(queue, &value[0],30));
-//     ASSERT(1 == enqueue(queue, &value[1],20));
-//     ASSERT(value[0] == *(double*)dequeue(queue));
-// };
+void test_6_enqueues_an_double_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
+   void* queue = createQueue();
+    double value[] = {10.0,15.0};
+    ASSERT(1 == enqueue(queue, &value[0],30,compareInt));
+    ASSERT(1 == enqueue(queue, &value[1],40,compareInt));
+    ASSERT(value[1] == *(double*)dequeue(queue));
+};
 
-// void test_7_enqueues_the_double_elements_in_queue_and_dequeue_the_top_element(){
-//     double value1 = 10.0;
-//     double value2 = 20.0;
-//     enqueue(q, &value1,30);
-//     enqueue(q, &value2,40);
-//     ASSERT(value2 == *(double*)dequeue(q));
-// };
+void test_7_enqueues_the_double_elements_in_queue_and_dequeue_the_top_element(){
+    void* queue = createQueue();
+    double value[] = {10.0,15.0};
+    ASSERT(1 == enqueue(queue, &value[0],30,compareInt));
+    ASSERT(1 == enqueue(queue, &value[1],40,compareInt));
+    ASSERT(value[1] == *(double*)dequeue(queue));
+};
 
-// void test_8_enqueues_an_character_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
-//     char value = 'k';
-//     enqueue(q, &value,30);
-//     ASSERT(value == *(char*)dequeue(q));
-// };
+void test_8_enqueues_an_character_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
+    void* queue = createQueue();
+    char value = 'k';
+    ASSERT(1 == enqueue(queue, &value,30,compareInt));
+    ASSERT(value == *(char*)dequeue(queue));
+};
 
-// void test_9_enqueues_the_characters_elements_in_queue_and_dequeue_the_top_element(){
-//     char value1 = 'k';
-//     char value2 = 'a';
-//     enqueue(q, &value1,30);
-//     enqueue(q, &value2,40);
-//     ASSERT(value2 == *(char*)dequeue(q));
-// };
+void test_9_enqueues_the_characters_elements_in_queue_and_dequeue_the_top_element(){
+    void* queue = createQueue();
+    String value[] = {'m','t'};
+    ASSERT(1 == enqueue(queue, &value[0],30,compareInt));
+    ASSERT(1 == enqueue(queue, &value[1],40,compareInt));
+    ASSERT(value[1] == *(String*)dequeue(queue));
+};
 
 // void test_10_enqueues_an_String_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
 //     String value = "Kajal";
