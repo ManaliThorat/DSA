@@ -2,12 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-bool isFull(Queue *queue){
+int isFull(Queue *queue){
         if(queue->rear==queue->size-1)
         	return 1;
         return 0;
 }
-bool isEmpty(Queue *queue){
+int isEmpty(Queue *queue){
         if(queue->rear==-1)
         	return 1;
         return 0;

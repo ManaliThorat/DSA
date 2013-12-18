@@ -8,13 +8,7 @@
 int compareInt(void* a,void* b){
     return (*(int*)a - *(int*)b );
 }
-// void setup(){
-//     q = create();    
-// };
 
-// void tearDown(){
-//     free(q);
-// };
 
 void test_1_enqueues_an_integer_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
     void* queue = createQueue();
@@ -66,22 +60,23 @@ void test_8_enqueues_an_character_element_in_empty_queue_and_gives_back_that_ele
 
 void test_9_enqueues_the_characters_elements_in_queue_and_dequeue_the_top_element(){
     void* queue = createQueue();
-    String value[] = {'m','t'};
+    char value[] = {'m','t'};
+    ASSERT(1 == enqueue(queue, &value[0],30,compareInt));
+    ASSERT(1 == enqueue(queue, &value[1],40,compareInt));
+    ASSERT(value[1] == *(char*)dequeue(queue));
+};
+
+void test_10_enqueues_an_String_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
+   void* queue = createQueue();
+    String value = "manali";
+    ASSERT(1 == enqueue(queue, &value,30,compareInt));
+    ASSERT(value == *(String*)dequeue(queue));
+};
+
+void test_11_enqueues_the_String_elements_in_queue_and_dequeue_the_top_element(){
+     void* queue = createQueue();
+    String value[] = {"manali","kajal"};
     ASSERT(1 == enqueue(queue, &value[0],30,compareInt));
     ASSERT(1 == enqueue(queue, &value[1],40,compareInt));
     ASSERT(value[1] == *(String*)dequeue(queue));
 };
-
-// void test_10_enqueues_an_String_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
-//     String value = "Kajal";
-//     enqueue(q, &value,30);
-//     ASSERT(0 == strcmp(value,*(String*)dequeue(q)));
-// };
-
-// void test_11_enqueues_the_String_elements_in_queue_and_dequeue_the_top_element(){
-//     String value1 = "Kajal";
-//     String value2 = "Komal";
-//     enqueue(q, &value1,30);
-//     enqueue(q, &value2,40);
-//     ASSERT(value2 == *(String*)dequeue(q));
-// };

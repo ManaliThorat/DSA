@@ -4,15 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void test_enqueue_char_element_queue_is_full(){
-        Queue* queue;
-        char c='Q';
-        queue = create(sizeof(char),6);
-        queue->rear = 5;
-        queue->start = -1;
-        ASSERT(!enqueue(queue,&c));
-        free(queue);
-}
+
 void test_enqueue_int_element(){
         Queue* queue;
         int c=5;
@@ -26,6 +18,15 @@ void test_enqueue_float_element(){
         queue = create(sizeof(float),5);
         queue->rear = 1;
         ASSERT(enqueue(queue,&c));
+        free(queue);
+}
+void test_enqueue_char_element_queue_is_full(){
+        Queue* queue;
+        char c='m';
+        queue = create(sizeof(char),6);
+        queue->rear = 5;
+        queue->start = -1;
+        ASSERT(!enqueue(queue,&c));
         free(queue);
 }
 void test_enqueue_String_element(){

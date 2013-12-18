@@ -10,35 +10,34 @@ int compareInt(void* a , void* b){
 void test_for_add_front_process(){
        scheduler *q;
         scheduler expected = {NULL,0};
-    Process firstProcess = {"p1",3000,7,NULL};
+    Process p1 = {"p1",3000,7,NULL};
     q = create();
-    ASSERT(1 == scheduleProcess(q, &firstProcess,compareInt));
+    ASSERT(1 == scheduleProcess(q, &p1,compareInt));
 }
 void test_for_adding_high_priority_process(){
 	scheduler *q;
         scheduler expected = {NULL,0};
-    Process firstProcess = {"p1",3000,7,NULL};
-    Process secondProcess = {"p2",900,1,NULL};
+    Process p1 = {"p1",3000,7,NULL};
+    Process p2 = {"p2",900,1,NULL};
     q = create();
-    ASSERT(1 == scheduleProcess(q, &firstProcess,compareInt));
-    ASSERT(2 == scheduleProcess(q, &secondProcess,compareInt));
+    ASSERT(1 == scheduleProcess(q, &p1,compareInt));
+    ASSERT(2 == scheduleProcess(q, &p2,compareInt));
 }
 void test_add_process_in_middle(){
 	scheduler *q;
         scheduler expected = {NULL,0};
     Process *second,*third;
-    Process firstProcess = {"p1",3000,7,NULL};
-    Process secondProcess = {"p2",900,1,NULL};
-    Process thirdProcess = {"p3",400,2,NULL};
+    Process p1 = {"p1",3000,7,NULL};
+    Process p2 = {"p2",900,1,NULL};
+    Process p3 = {"p3",400,2,NULL};
     q = create();
-    ASSERT(1 == scheduleProcess(q, &firstProcess,compareInt));
-    ASSERT(2 == scheduleProcess(q, &secondProcess,compareInt));
-    ASSERT(3 == scheduleProcess(q, &thirdProcess,compareInt));
-    ASSERT(q->front == &secondProcess);
+    ASSERT(1 == scheduleProcess(q, &p1,compareInt));
+    ASSERT(2 == scheduleProcess(q, &p2,compareInt));
+    ASSERT(3 == scheduleProcess(q, &p3,compareInt));
+    ASSERT(q->front == &p2);
 }
 void test_remove_first(){
 	scheduler *q;
-   
     Process p1 = {"p1",0,5,NULL};
     q = create();
     scheduleProcess(q, &p1,compareInt);
