@@ -1,110 +1,86 @@
 #include "testUtils.h"
 #include "priority_queue.h"
-#include <stdlib.h>
+#include "customType.h"
 #include <string.h>
-#include <stdio.h>
 
-int compareInt (void* a, void* b){
-    return (*(int*)a - *(int*)b);
+//create setup, tearDown, fixtureSetup, fixtureTearDown methods if needed
+
+int compareInt(void* a,void* b){
+    return (*(int*)a - *(int*)b );
 }
-Queue *q;
-void test_for_adding_first_element_integer(){
+// void setup(){
+//     q = create();    
+// };
+
+// void tearDown(){
+//     free(q);
+// };
+
+void test_1_enqueues_an_integer_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
+    void* queue = createQueue();
     int value = 10;
-    Node firstNode = {&value,30,NULL};
-    q = create();
-    ASSERT(1 == insert(q, &firstNode,compareInt));
-}
-void test_for_adding_element_integer(){
-    int value[] = {10,20};
-    Queue expected = {NULL,0};
-    Node firstNode = {&value,30,NULL};
-    Node secondNode = {&value,20,NULL};
-    q = create();
-    ASSERT(1 == insert(q, &firstNode,compareInt));
-    ASSERT(1 == insert(q, &secondNode,compareInt));
-}
-void test_for_adding_element_float(){
-        float value[] = {20.0,10.0};
-        Queue expected = {NULL,0};
-    Node firstNode = {&value[0],30,NULL};
-    Node secondNode = {&value[1],20,NULL};
-    q = create();
-    ASSERT(1 == insert(q, &firstNode,compareInt));
-    ASSERT(1 == insert(q, &secondNode,compareInt));
-}
+    ASSERT(1 == enqueue(queue, &value,30,compareInt));
+    ASSERT(value == *(int*)dequeue(queue));
+};
 
-void test_for_adding_element_string(){
-        string value[] = {"shital","manali"};
-        Queue expected = {NULL,0};
-    Node firstNode = {&value[0],30,NULL};
-    Node secondNode = {&value[1],20,NULL};
-    q = create();
-    ASSERT(1 == insert(q, &firstNode,compareInt));
-    ASSERT(1 == insert(q, &secondNode,compareInt));
-}
-void test_remove_element_priority(){
-        int value[] = {10,20,30};
-    Node *second,*third;
-    Node firstNode = {&value[0],40,NULL};
-    Node secondNode = {&value[1],30,NULL};
-    Node thirdNode = {&value[2],20,NULL};
-    q = create();
-    ASSERT(1 == insert(q, &firstNode,compareInt));
-    ASSERT(1 == insert(q, &secondNode,compareInt));
-    ASSERT(1 == insert(q, &thirdNode,compareInt));
-    second = q->front->next;
-    third = second->next;
-    ASSERT(1 == removeElement(q));
-    ASSERT(1 == removeElement(q));
-    ASSERT(1 == removeElement(q));
-}
-void test_remove_element_priority_float(){
-        float value[] = {1.0,2.0,3.0};
-    Node *second,*third;
-    Node firstNode = {&value[0],40,NULL};
-    Node secondNode = {&value[1],30,NULL};
-    Node thirdNode = {&value[2],20,NULL};
-    q = create();
-    ASSERT(1 == insert(q, &firstNode,compareInt));
-    ASSERT(1 == insert(q, &secondNode,compareInt));
-    ASSERT(1 == insert(q, &thirdNode,compareInt));
-    second = q->front->next;
-    third = second->next;
-    ASSERT(1 == removeElement(q));
-    ASSERT(1 == removeElement(q));
-    ASSERT(1 == removeElement(q));
-}
-void test_remove_element_priority_double(){
-       double value[] = {1.000000,2.000000,3.000000};
-    Node *second,*third;
-    Node firstNode = {&value[0],40,NULL};
-    Node secondNode = {&value[1],30,NULL};
-    Node thirdNode = {&value[2],20,NULL};
-    q = create();
-    ASSERT(1 == insert(q, &firstNode,compareInt));
-    ASSERT(1 == insert(q, &secondNode,compareInt));
-    ASSERT(1 == insert(q, &thirdNode,compareInt));
-    second = q->front->next;
-    third = second->next;
-    ASSERT(1 == removeElement(q));
-    ASSERT(1 == removeElement(q));
-    ASSERT(1 == removeElement(q));
-}
+void test_2_enqueues_the_integer_elements_in_queue_and_dequeue_the_top_element(){
+    void* queue = createQueue();
+    int value[] = {10,15};
+    ASSERT(1 == enqueue(queue, &value[0],30,compareInt));
+    ASSERT(1 == enqueue(queue, &value[1],20,compareInt));
+    ASSERT(value[1] == *(int*)dequeue(queue));
+};
 
-void test_remove_element_priority_char(){
-       char value[] = {'m','a','n'};
-    Node *second,*third;
-    Node firstNode = {&value[0],40,NULL};
-    Node secondNode = {&value[1],30,NULL};
-    Node thirdNode = {&value[2],20,NULL};
-    q = create();
-    ASSERT(1 == insert(q, &firstNode,compareInt));
-    ASSERT(1 == insert(q, &secondNode,compareInt));
-    ASSERT(1 == insert(q, &thirdNode,compareInt));
-    second = q->front->next;
-    third = second->next;
-    ASSERT(1 == removeElement(q));
-    ASSERT(1 == removeElement(q));
-    ASSERT(1 == removeElement(q));
-}
 
+void test_4_enqueues_an_float_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
+    void* queue = createQueue();
+    float value[] = {10.0,15.0};
+    ASSERT(1 == enqueue(queue, &value[0],30,compareInt));
+    ASSERT(1 == enqueue(queue, &value[1],40,compareInt));
+    ASSERT(value[1] == *(float*)dequeue(queue));
+};
+
+
+// void test_6_enqueues_an_double_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
+//    void* queue = createQueue();
+//     double value[] = {10.000000,15.000000};
+//     ASSERT(1 == enqueue(queue, &value[0],30));
+//     ASSERT(1 == enqueue(queue, &value[1],20));
+//     ASSERT(value[0] == *(double*)dequeue(queue));
+// };
+
+// void test_7_enqueues_the_double_elements_in_queue_and_dequeue_the_top_element(){
+//     double value1 = 10.0;
+//     double value2 = 20.0;
+//     enqueue(q, &value1,30);
+//     enqueue(q, &value2,40);
+//     ASSERT(value2 == *(double*)dequeue(q));
+// };
+
+// void test_8_enqueues_an_character_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
+//     char value = 'k';
+//     enqueue(q, &value,30);
+//     ASSERT(value == *(char*)dequeue(q));
+// };
+
+// void test_9_enqueues_the_characters_elements_in_queue_and_dequeue_the_top_element(){
+//     char value1 = 'k';
+//     char value2 = 'a';
+//     enqueue(q, &value1,30);
+//     enqueue(q, &value2,40);
+//     ASSERT(value2 == *(char*)dequeue(q));
+// };
+
+// void test_10_enqueues_an_String_element_in_empty_queue_and_gives_back_that_element_when_dequeued(){
+//     String value = "Kajal";
+//     enqueue(q, &value,30);
+//     ASSERT(0 == strcmp(value,*(String*)dequeue(q)));
+// };
+
+// void test_11_enqueues_the_String_elements_in_queue_and_dequeue_the_top_element(){
+//     String value1 = "Kajal";
+//     String value2 = "Komal";
+//     enqueue(q, &value1,30);
+//     enqueue(q, &value2,40);
+//     ASSERT(value2 == *(String*)dequeue(q));
+// };

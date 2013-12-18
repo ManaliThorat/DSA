@@ -13,7 +13,7 @@ int frontAdd(scheduler *queue, Process *process){
     queue->length++;
     return queue->length;        
 }
-int insert(scheduler *queue, Process *process,compFunc* compare){
+int scheduleProcess(scheduler *queue, Process *process,compFunc* compare){
     Process *previous,*next,*temp;
     int i;
     temp = queue->front;
