@@ -6,13 +6,18 @@ typedef int (*compare)(void* firstElement, void* secondElement);
 typedef int (*hash)(void *key);
 #endif        
 typedef struct {
-        void **bucket;
+        void *bucket;
         hash hashFunc;
         compare cmp;
 } HashMap;
 
-HashMap createMap(hash hashFunc, compare compareKey);
+typedef struct{
+        void* key;
+        void* value;
+} Intern;
+HashMap* createHashMap(hash hashFunc, compare compareKey);
+Intern* createHashNode(void *key, void *value);
 int put(HashMap* map,void* key,void* value);
 void* get(HashMap* map,void* key);
-int remove(HashMap* map, void* kay);
+int removeMap(HashMap* map, void* kay);
 Iterator keys(HashMap* map);
