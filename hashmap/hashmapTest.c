@@ -1,7 +1,7 @@
 #include "testUtils.h"
 #include "hashmap.h"
 #include <string.h>
-
+#include <stdio.h>
 int compareKey(void* key1 , void* key2 ){
     return *(int*)key1 - *(int*)key2;
 }
@@ -21,3 +21,12 @@ void test_add_an_element_to_hashmap(){
     ASSERT(put(map, &key3 , &data3));
     ASSERT(put(map, &key3 , &data3));
 }
+void test_get_an_element_to_hashmap(){
+    void* data;
+    int key=1234 , value = 1;
+    HashMap* map = createHashMap(hashFun, compareKey);
+    ASSERT(put(map, &key , &value));
+    data = get(map, &key);
+    ASSERT(&value == data);
+}
+

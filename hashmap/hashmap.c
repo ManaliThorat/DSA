@@ -24,11 +24,18 @@ int put(HashMap *map, void *key,void *value){
     insert(list, list->length, intern);
     return 1;
 }
-void* get(HashMap* map,void* key){
+void* get(HashMap *map, void *key){
     node* node;
     Intern* data;
-    int bucketNumber = map->hashFunc(key) % 10;
-    DoubleList* list = (DoubleList*)(map->bucket+(sizeof(DoubleList)*bucketNumber));
-	if(0 == list->length) return NULL;
-    return data;
+    int i;
+    int bucketNumber = map->hashFunc(key);
+    DoubleList *list = (DoubleList*)(map->bucket+(bucketNumber*sizeof(DoubleList)));
+    if(0 == list->length) return NULL;
+    node = list->head;
+    for(i=0;i<list->length;i++){
+    	data = node->data;
+        if (!map->cmp(key ,data->key)) return data->value;
+        node = node->next;
+    }
+    return NULL;
 }
