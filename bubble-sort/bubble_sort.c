@@ -3,8 +3,7 @@
 #include <memory.h>
 #include <stdlib.h>
 #include <stdio.h>
-void bsort(void* base, int numberOfElements, int elementSize,
-                        compare comp) {
+void bsort(void* base, int numberOfElements, int elementSize,compare comp){
     int i, j;
     void* temp = calloc(1, elementSize);
     void* elementToCompare;
