@@ -30,3 +30,15 @@ void test_get_an_element_to_hashmap(){
     ASSERT(&value == data);
 }
 
+void test_remove_an_element_to_hashmap(){
+    void* data;
+    int key=1234 , value = 1;
+    HashMap* map = createHashMap(hashFun, compareKey);
+    ASSERT(put(map, &key , &value));
+    data = get(map, &key);
+    ASSERT(&value == data);
+    ASSERT(removeMap(map,&key));
+    data = get(map, &key);
+    // printf("%d\n",*(int*)data );
+    ASSERT(NULL == data);
+}

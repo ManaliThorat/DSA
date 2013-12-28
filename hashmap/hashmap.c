@@ -39,3 +39,31 @@ void* get(HashMap *map, void *key){
     }
     return NULL;
 }
+int removeMap(HashMap* map, void* key) { 
+    node* node;
+    Intern* data;
+    int i,index = 1;
+    int bucketNumber = map->hashFunc(key);
+    DoubleList *list = (DoubleList*)(map->bucket+(bucketNumber*sizeof(DoubleList)));
+    if(0 == list->length) return 0;
+    node = list->head;
+    for(i=0;i<list->length;i++){
+    printf("-----%d   %d\n", list->length,index);
+
+    	data = node->data;
+        if (map->cmp(key ,data->key)){
+         node = node->next;
+        index++; 
+        	delete(list,index);
+        }	
+    printf("-----%d   %d\n", list->length,index);
+
+       
+    }
+    printf("-----%d\n", list->length);
+    delete(list,index);
+    // printf("%d\n", list->length);
+
+    return 1;
+
+}
