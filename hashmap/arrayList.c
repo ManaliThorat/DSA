@@ -81,25 +81,25 @@ int arrayList_add(ArrayList *list, void* data){
 	return 1;
 
 }
-// int hasNext(Iterator* it){
-//     ArrayList *list = it->list;
-//     if(list->length <= it->position) return 0;
-//     return 1;
-// }
-// void* next(Iterator* it){
-//         ArrayList* list = it->list;
-//     if(!hasNext(it)) return NULL;
-//     return list->base[it->position++];
-// }
+int hasNext(Iterator* it){
+    ArrayList *list = it->list;
+    if(list->length <= it->position) return 0;
+    return 1;
+}
+void* next(Iterator* it){
+        ArrayList* list = it->list;
+    if(!hasNext(it)) return NULL;
+    return list->base[it->position++];
+}
 
-// Iterator getIterator(ArrayList* list){
-//     Iterator it;
-//     it.list = list;
-//     it.position = 0;
-//     it.hasNext = &hasNext;
-//     it.next = &next;
-//     return it;
-// }
+Iterator arrayList_getIterator(ArrayList* list){
+    Iterator it;
+    it.list = list;
+    it.position = 0;
+    it.hasNext = &hasNext;
+    it.hashnext = &next;
+    return it;
+}
 void arrayList_dispose(ArrayList *list){
 	free(list->base);
 }

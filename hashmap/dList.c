@@ -114,6 +114,7 @@ void* nextForList(Iterator *it){
     for(i = 0;i < it->position;i++)
         temp = temp->next;
     it->position++;
+    // printf("%d\n", temp);
     return temp->data;
 }
 Iterator getIterator(DoubleList *dList){
@@ -121,7 +122,7 @@ Iterator getIterator(DoubleList *dList){
     listIterator.position = 0;
     listIterator.list = dList;
     listIterator.hasNext = &hasNextForList;
-    listIterator.next = &nextForList;
+    listIterator.hashnext = &nextForList;
     return listIterator;
 }
 void* getData(DoubleList dList, void *searchElement, compare cmp){

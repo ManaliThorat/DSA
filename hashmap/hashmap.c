@@ -2,10 +2,9 @@
 #include "internalHashMap.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "arrayList.h"
 
 typedef struct{
-    DoubleList dList;
+    DoubleList* dList;
 } Bucket;
 HashMap* createHashMap(hash hashFunc, compare compareKey){
 	HashMap* map = calloc(1, sizeof(HashMap));
@@ -52,9 +51,7 @@ int removeMap(HashMap* map, void* key) {
     Node = (node*)list->head;
     for(i = 0; i< list->length ; i++){
     	data = (Intern*)Node->data;
-    	printf("%dkey\n",*(int*)data->key );
         if (!map->cmp(key ,data->key)){
-        	// printf("---------%d %d\n",index,list->length);
 			delete(list,index-1);
         	break;
         }
@@ -64,4 +61,27 @@ int removeMap(HashMap* map, void* key) {
     	}
     }
     return 1;
+}
+void* hashNext(Iterator* it){
+	Intern* list;
+	Iterator hashIterator = getIterator(it->list);
+	hashIterator.position = it->position;
+	list = hashIterator.hashnext(&hashIterator);
+	it->position++;
+	return list->key;
+}
+Iterator keys(HashMap* map){
+	DoubleList* dList;
+    Bucket *bucket;
+	int i;
+	Bucket* temp;
+	Iterator it;
+	for(i = 0;i <= 9;i++){
+        dList = (DoubleList*)map->bucket +(i *sizeof(void*));
+        while(!hasNext(it))
+        printf("comming\n");
+        it = getIterator(bucket->dList);
+        it.hashnext = &hashNext;
+	}
+	return it;
 }

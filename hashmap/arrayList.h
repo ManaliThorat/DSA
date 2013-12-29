@@ -19,4 +19,4 @@ void* arrayList_get(ArrayList *list, int index);
 
 void arrayList_dispose(ArrayList *list);
 
-// Iterator getIterator(ArrayList* list);
+Iterator arrayList_getIterator(ArrayList* list);

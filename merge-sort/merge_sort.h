@@ -1,2 +1,5 @@
-void part(void* base,int min,int max);
-void merge(void* base,int min,int mid,int max);
+#include <stddef.h>
+typedef int (*comparator)(void* prev, void* next);
+
+int merge(void** base, void** left, void** right, size_t leftLength, size_t rightLength, size_t elementSize,comparator cmp);
+void mergeSort(void** base, int numberOfElements, int elementSize, comparator comp);
