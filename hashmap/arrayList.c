@@ -56,7 +56,7 @@ int arrayList_remove(ArrayList *list, int index){
 	if (index < 0 || index > list->length) return 0;
 	shiftElementsLeft(list, index);
 	return 1;
-}
+} 
 
 int arrayList_search(ArrayList *list, void* data){
 	int i;

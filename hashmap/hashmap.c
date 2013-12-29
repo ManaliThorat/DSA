@@ -4,9 +4,12 @@
 #include <stdio.h>
 #include "arrayList.h"
 
+typedef struct{
+    DoubleList dList;
+} Bucket;
 HashMap* createHashMap(hash hashFunc, compare compareKey){
 	HashMap* map = calloc(1, sizeof(HashMap));
-	map->bucket = calloc(10, sizeof(DoubleList));
+	map->bucket = calloc(10, sizeof(void*));
 	map->cmp = compareKey;
 	map->hashFunc = hashFunc;
     return map;
@@ -17,53 +20,48 @@ Intern* createHashNode(void *key, void *value){
 	intern->value = value;
 	return intern;
 }
+
 int put(HashMap *map, void *key,void *value){
     int bucketNumber = map->hashFunc(key);
-    Intern *intern = createHashNode(key,value);
-    DoubleList *list = (DoubleList*)(map->bucket+(bucketNumber*sizeof(DoubleList)));
-    insert(list, list->length, intern);
-    return 1;
+    Intern *intern = (Intern*)createHashNode(key,value);
+    DoubleList *list = (DoubleList*)map->bucket+bucketNumber*sizeof(void*);
+    return insert(list, list->length, intern);
 }
 void* get(HashMap *map, void *key){
-    node* node;
+    node* Node;
     Intern* data;
     int i;
     int bucketNumber = map->hashFunc(key);
-    DoubleList *list = (DoubleList*)(map->bucket+(bucketNumber*sizeof(DoubleList)));
+    DoubleList *list = (DoubleList*)map->bucket+bucketNumber*sizeof(void*);
     if(0 == list->length) return NULL;
-    node = list->head;
+    Node = (node*)list->head;
     for(i=0;i<list->length;i++){
-    	data = node->data;
+    	data = (Intern*)Node->data;
         if (!map->cmp(key ,data->key)) return data->value;
-        node = node->next;
+        Node = Node->next;
     }
     return NULL;
 }
 int removeMap(HashMap* map, void* key) { 
-    node* node;
+    node* Node;
     Intern* data;
     int i,index = 1;
     int bucketNumber = map->hashFunc(key);
-    DoubleList *list = (DoubleList*)(map->bucket+(bucketNumber*sizeof(DoubleList)));
+    DoubleList *list = (DoubleList*)map->bucket+bucketNumber*sizeof(void*);
     if(0 == list->length) return 0;
-    node = list->head;
-    for(i=0;i<list->length;i++){
-    printf("-----%d   %d\n", list->length,index);
-
-    	data = node->data;
-        if (map->cmp(key ,data->key)){
-         node = node->next;
-        index++; 
-        	delete(list,index);
-        }	
-    printf("-----%d   %d\n", list->length,index);
-
-       
+    Node = (node*)list->head;
+    for(i = 0; i< list->length ; i++){
+    	data = (Intern*)Node->data;
+    	printf("%dkey\n",*(int*)data->key );
+        if (!map->cmp(key ,data->key)){
+        	// printf("---------%d %d\n",index,list->length);
+			delete(list,index-1);
+        	break;
+        }
+        else{
+        	Node = Node->next;
+        	index++;
+    	}
     }
-    printf("-----%d\n", list->length);
-    delete(list,index);
-    // printf("%d\n", list->length);
-
     return 1;
-
 }
