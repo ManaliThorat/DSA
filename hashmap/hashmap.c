@@ -57,5 +57,24 @@ void* get(HashMap *map, void *key){
     return NULL;
 }
 
-
-
+int removeMap(HashMap* map, void* key) { 
+    node* Node;
+    Data* data;
+    int i,index = 0;
+    int bucketNumber = map->hashFunc(key) % 10;
+    DoubleList *list = (DoubleList*)ArrayList_get(map->buckets, bucketNumber);
+    if(0 == list->length) return 0;
+    Node = (node*)list->head;
+    for(i = 0; i< list->length ; i++){
+            data = (Data*)Node->data;
+        if (!map->cmp(key ,data->key)){
+            dList_delete(list,index);
+            break;
+        }
+        else{
+            Node = Node->next;
+            index++;
+        }
+    }
+    return 1;
+}
