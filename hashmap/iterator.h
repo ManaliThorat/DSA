@@ -4,7 +4,7 @@
 typedef struct iterator{
 	int position;
 	void* list;
-	void* (*hashnext)(struct iterator *it);
+	void* (*next)(struct iterator *it);
 	int (*hasNext)(struct iterator *it);
 } Iterator;
 

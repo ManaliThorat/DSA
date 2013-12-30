@@ -1,82 +1,75 @@
 #include "dList.h"
 #include <stdlib.h>
 #include "iterator.h"
-node* createNode(void *prevAddress,void *data, void *nextAddress){
+node* dList_createNode(void *prevAddress,void *data, void *nextAddress){
     node *element = malloc(sizeof(node));
     element->previous = prevAddress;
     element->data = data;
     element->next = nextAddress;
     return element;
 }
-DoubleList create(){
+DoubleList dList_create(){
     DoubleList dList = {0,NULL,NULL};
     return dList;
 }
-int insert(DoubleList *dList, int index, void *element){
-    int i;
-    node *temp,*previousNode,*nextnode,*newNode;
-    if(index > dList->length) return 0;
-    temp = dList->head;
-    for (i = 0; i < index ; ++i)
-        if(temp->next != NULL)        temp = temp->next;
-    if(i == 0 && dList->length == 0){
-        newNode = createNode(NULL,element, NULL);
-        dList->head = newNode;
-        dList->length++;
-        return 1;
-    }
-    if(index == 0){
-        newNode = createNode(NULL, element, dList->head);
-        dList->head->previous = newNode;
-        dList->head = newNode;
-        dList->length++;
-        return 1;
-    }
-    if(i == dList->length){
-        newNode = createNode(temp,element,NULL);
-        temp->next = newNode;
-        dList->length++;
-        return 1;
-    }
-    newNode = createNode(temp->previous,element, temp);
-    temp->previous->next = newNode;
+int dlist_insertAtFirst(DoubleList *dList,void *element){
+    node *newNode = dList_createNode(NULL, element, dList->head);
+    dList->head = newNode;
+    if(dList->length != 0)    dList->head->previous = newNode;
     dList->length++;
     return 1;
 }
-int delete(DoubleList *dList, int index){
+int dList_insert(DoubleList *dList, int index, void *element){
     int i;
-    node *temp,*previousNode,*nextnode,*newNode;
-    if(index > dList->length || index < 0)
+    node *temp,*newNode;
+    if(index > dList->length)    return 0;
+    if(index == 0)     return dlist_insertAtFirst(dList,element);
+    temp = dList->head;
+    for (i = 0; i < index ; ++i)
+        if(temp->next != NULL)    temp = temp->next;
+    if(i == dList->length){
+        newNode = dList_createNode(temp,element,NULL);
+        temp->next = newNode;
+    }
+    else{
+        newNode = dList_createNode(temp->previous,element, temp);
+        temp->previous->next = newNode;
+    }
+    dList->length++;
+    return 1;
+}
+void dList_deleteAtStart(DoubleList *dList,node *temp){
+    if(dList->length != 1)
+        dList->head = temp->next;
+    else dList->head = NULL;
+}
+void dList_deleteInBetween(DoubleList *dList,node *temp,int position){
+    if(position == dList->length - 1)
+        temp->previous->next = NULL;
+    else{
+        temp->previous->next = temp->next;
+        temp->next->previous = temp->previous;
+    }
+}
+int dList_delete(DoubleList *dList, int index){
+    int position;
+    node *temp;
+    if(index > dList->length)
         return 0;
     temp = dList->head;
-    for (i = 0; i < index && i < dList->length ; ++i)
+    for(position = 0; position < index; ++position){
         temp = temp->next;
-    if(i == 0 && dList->length == 1){
-        dList->head = NULL;
-        free(temp);
-        dList->length--;
-        return 1;
     }
-    if(i == 0){
-        dList->head = temp->next;
-        free(temp);
-        dList->length--;
-        return 1;
+    if(index == 0){
+        dList_deleteAtStart(dList,temp);
     }
-    if(i == dList->length - 1){
-        temp->previous->next = NULL;
-        free(temp);
-        dList->length--;
-        return 1;
-    }
-    temp->previous->next = temp->next;
-    temp->next->previous = temp->previous;
+    else dList_deleteInBetween(dList,temp,position);
     free(temp);
     dList->length--;
     return 1;
 }
 
-void sort(DoubleList list, compare fun){
+void dList_sort(DoubleList list, compare fun){
     node *temp,*nodeToCompare,*currentNode;
     void *data;
     int change = 0;
@@ -97,35 +90,32 @@ void sort(DoubleList list, compare fun){
             currentNode->data = data;
     }
 }
-int hasNextForList(Iterator *it){
+int dList_hasNextForList(Iterator *it){
     DoubleList *dList;
     dList = (DoubleList*)it->list;
-    if(it->position == dList->length)
+    if(NULL == it->position)
         return 0;
     return 1;
 }
-void* nextForList(Iterator *it){
+void* dList_nextForList(Iterator *it){
     DoubleList *dList;
-    int i = 0;
-    node *temp;
-    if(0 == hasNextForList(it)) return NULL;
-    dList = (DoubleList*)it->list;
-    temp = dList->head;
-    for(i = 0;i < it->position;i++)
-        temp = temp->next;
-    it->position++;
-    // printf("%d\n", temp);
-    return temp->data;
+    node *temp;void *result;
+    if(0 == dList_hasNextForList(it)) return NULL;
+    temp = it->position;
+    result = temp->data;
+    it->position = temp->next;
+    return result;
 }
-Iterator getIterator(DoubleList *dList){
+Iterator dList_getIterator(DoubleList *dList){
     Iterator listIterator;
-    listIterator.position = 0;
+    listIterator.position = dList->head;
     listIterator.list = dList;
-    listIterator.hasNext = &hasNextForList;
-    listIterator.hashnext = &nextForList;
+    listIterator.hasNext = &dList_hasNextForList;
+    listIterator.next = &dList_nextForList;
     return listIterator;
 }
-void* getData(DoubleList dList, void *searchElement, compare cmp){
+
+void* dList_getData(DoubleList dList, void *searchElement, compare cmp){
     node *nodeToCompare;
     if(dList.head == NULL)
         return NULL;
@@ -135,12 +125,12 @@ void* getData(DoubleList dList, void *searchElement, compare cmp){
     }
     return NULL;
 }
-void dispose(DoubleList dList){
+void dList_dispose(DoubleList dList){
     node *temp;
     if(dList.head == NULL)
         return;
     temp = dList.head;
     dList.head = temp->next;
     free(temp);
-    dispose(dList);
+    dList_dispose(dList);
 }

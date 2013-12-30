@@ -1,7 +1,7 @@
 #include "merge_sort.h"
 #include <memory.h>
 #include <stdlib.h>
-int merge(void** base, void** left, void** right, size_t leftLength, size_t rightLength,size_t elementSize, comparator cmp        ){
+int merge(void** base, void** left, void** right, size_t leftLength, size_t rightLength,size_t elementSize, comparator cmp){
         int  i=0,j=0,k=0;
         while(i < leftLength && j < rightLength){
                 if(cmp(left[i], right[j])){
