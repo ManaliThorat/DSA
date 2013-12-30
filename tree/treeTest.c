@@ -2,15 +2,16 @@
 #include "tree.h"
 #include <stdlib.h>
 #include <stdio.h>
-const int SUCCESSFUL = 1;
+
 int compareInt(void *a,void *b){
 	return *(int*)a - *(int*)b;
 }
+
 void test_insert_first_node(){
 	Tree tree = createTree(compareInt);
 	int data = 2;
 	int result = insertToTree(&tree, NULL, &data);
-	ASSERT(SUCCESSFUL == result);
+	ASSERT(1 == result);
 }
 void test_insert_second_node(){
 	Tree tree = createTree(compareInt);
@@ -74,6 +75,31 @@ void test_search_element_which_is_not_present(){
 	ASSERT(insertToTree(&tree, NULL, &data[0]));
 	ASSERT(insertToTree(&tree, &data[0], &data[1]));
 	ASSERT(insertToTree(&tree, &data[1], &data[2]));
-	ASSERT(search(&tree,&data[2]));
 	ASSERT(0 == search(&tree,&data[7]));
+}
+
+void test_delete_node_under_root(){
+	Tree tree = createTree(compareInt);
+	Iterator result;
+	int data[2] = {1,2};
+	ASSERT(insertToTree(&tree, NULL, &data));
+	ASSERT(insertToTree(&tree, &data, &data[1]));
+	ASSERT(deleteFromTree(&tree,&data[1]));
+	result = getChildren(&tree, &data);
+	ASSERT(0 == result.hasNext(&result));
+}
+
+void test_delete_nodes_at_different_level(){
+	Tree tree = createTree(compareInt);
+	Iterator result;
+	int data[7] = {1,2,3,4,5,6,7};
+	ASSERT(insertToTree(&tree, NULL, &data[0]));
+	ASSERT(insertToTree(&tree, &data[0], &data[1]));
+	ASSERT(insertToTree(&tree, &data[1], &data[2]));
+	ASSERT(insertToTree(&tree, &data[2], &data[3]));
+	ASSERT(insertToTree(&tree, &data[3], &data[4]));
+	ASSERT(insertToTree(&tree, &data[4], &data[5]));
+	ASSERT(deleteFromTree(&tree, &data[5]));
+	result = getChildren(&tree, &data[4]);
+	ASSERT(0 == result.hasNext(&result));
 }

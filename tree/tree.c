@@ -73,3 +73,21 @@ int search(Tree* tree, void* searchElement){
         return 1;
     return 0;
 }
+
+int deleteFromTree(Tree *tree, void *data){
+	TreeNode *root = (TreeNode*)tree->root;
+	TreeNode *tn,*parent;
+	Iterator it;
+	tn = getTreeNode(root->children, data, tree->cmp);
+	if(0 == tn->children.length){
+		parent = tn->parent;
+		it = getIterator(&parent->children);
+		while(it.hasNext(&it)){
+			if(tree->cmp(data,it.next(&it)))
+				break;
+		}
+		delete(&parent->children, it.position - 1);
+		return 1;
+	}
+	return 0;
+}
