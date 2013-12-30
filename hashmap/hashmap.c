@@ -23,20 +23,20 @@ HashMap createHashmap(hash hashFunc, compare compareKey){
 	return map;
 }
 Data* createHashNode(void *key, void *value){
-	Data *hash_node = malloc(sizeof(Data));
-	hash_node->key = key;
-	hash_node->value = value;
-	return hash_node;
+	Data *data = malloc(sizeof(Data));
+	data->key = key;
+	data->value = value;
+	return data;
 }
 
 int put(HashMap *map, void *key, void *value){
 	DoubleList *list;
-	Data *hash_node;
+	Data *data;
 	int bucketNumber;
 	bucketNumber = (map->hashFunc(key)) % 10;
-	hash_node = createHashNode(key, value);
+	data = createHashNode(key, value);
 	list = (DoubleList*)ArrayList_get(map->buckets, bucketNumber);
-	dList_insert(list, list->length, hash_node);
+	dList_insert(list, list->length, data);
 	return 1;
 }
 
@@ -77,4 +77,22 @@ int removeMap(HashMap* map, void* key) {
         }
     }
     return 1;
+}
+
+Iterator keys(HashMap *map){
+        Iterator it1;
+        Iterator it2;
+        Iterator result;
+        Data *data;
+        DoubleList list = dList_create();
+        it1 = ArrayList_getIterator(map->buckets);
+        while(it1.hasNext(&it1)){
+            it2 = dList_getIterator(it1.next(&it1));
+            while(it2.hasNext(&it2)){
+               data = it2.next(&it2);
+                dList_insert(&list, 0, data->key);
+            }
+        }
+        result = dList_getIterator(&list);
+        return result;
 }
