@@ -18,3 +18,4 @@ void* get(HashMap* map, void* key);
 int removeMap(HashMap* map, void* key);
 Iterator keys(HashMap* map);
 void rehash(HashMap* map);
+void dispose(HashMap *map);

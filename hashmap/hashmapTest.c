@@ -2,7 +2,6 @@
 #include "hashmap.h"
 #include <string.h>
 #include <stdio.h>
-//create setup, tearDown, fixtureSetup, fixtureTearDown methods if needed
 
 int compareKey(void* key1 , void* key2 ){
 	return *(int*)key1 - *(int*)key2;
@@ -18,6 +17,7 @@ void test_add_an_element_to_hashmap(){
     ASSERT(put(&map,&key1 , &data1));
     data = get(&map, &key1);
     ASSERT(data == &data1);
+    dispose(&map);
 }
 void test_add_multiple_elements_to_hashmap(){
     void* data;
@@ -32,6 +32,7 @@ void test_add_multiple_elements_to_hashmap(){
     ASSERT(put(&map,&key3 , &data3));
     data = get(&map, &key3);
     ASSERT(data == &data3);
+    dispose(&map);
 }
 
 void test_remove_element_from_hashmap(){
@@ -47,7 +48,8 @@ void test_remove_element_from_hashmap(){
     ASSERT(put(&map,&key3 , &data3));
     data = get(&map, &key3);
     ASSERT(data == &data3);
-      ASSERT(removeMap(&map, &key1));
+    ASSERT(removeMap(&map, &key1));
+    dispose(&map);
   }
 void test_get_element_from_hashmap_after_removing(){
     void* data;
@@ -62,9 +64,10 @@ void test_get_element_from_hashmap_after_removing(){
     ASSERT(put(&map,&key3 , &data3));
     data = get(&map, &key3);
     ASSERT(data == &data3);
-      ASSERT(removeMap(&map, &key3));
-      data = get(&map, &key3);
+    ASSERT(removeMap(&map, &key3));
+    data = get(&map, &key3);
     ASSERT(data == NULL);
+    dispose(&map);
   }
 
 void test_keys_of_hashmap_gives_all_keys_in_map(){
@@ -81,7 +84,7 @@ void test_keys_of_hashmap_gives_all_keys_in_map(){
     ASSERT(1234 == *(int*)it.next(&it));
     ASSERT(1235 == *(int*)it.next(&it));
     ASSERT(1245 == *(int*)it.next(&it));
-
+    dispose(&map);
 }
 void test_rehash_elements_to_hashmap(){
     void* data;
@@ -102,8 +105,6 @@ void test_rehash_elements_to_hashmap(){
     ASSERT(put(&map,&key6 , &data6));
     ASSERT(put(&map,&key7 , &data7));
     it = keys(&map);
-    it = keys(&map);
-    
     ASSERT(2 == *(int*)it.next(&it));
     ASSERT(3 == *(int*)it.next(&it));
     ASSERT(4 == *(int*)it.next(&it));
@@ -111,5 +112,5 @@ void test_rehash_elements_to_hashmap(){
     ASSERT(5 == *(int*)it.next(&it));
     ASSERT(6 == *(int*)it.next(&it));
     ASSERT(14 == *(int*)it.next(&it));
-
+    dispose(&map);
 }

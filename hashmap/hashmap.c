@@ -116,3 +116,14 @@ void rehash(HashMap* map){
         put(map, key, value);
     }
 }
+
+void dispose(HashMap *map){
+    int i;
+    DoubleList* list;
+    Iterator it;
+    for(i = 0 ; i < map->capacity ; i++){
+        list = (DoubleList*)ArrayList_get(map->buckets,i);
+        dList_dispose(*list);
+    };
+    free(map->buckets);
+};
