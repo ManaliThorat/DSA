@@ -9,12 +9,13 @@ void createListForEachBucket(void *bucket){
 	list  = dList_create();
 	*(DoubleList*)bucket = list;
 }
-HashMap createHashmap(hash hashFunc, compare compareKey){
+HashMap createHashmap(hash hashFunc, compare compareKey,int capacity){
 	HashMap map;
 	int i;
 	ArrayList buckets = ArrayList_create(10);
 	map.buckets = malloc(sizeof(ArrayList));
 	*(ArrayList*)map.buckets = buckets;
+    map.capacity = capacity;
 	map.cmp = compareKey;
 	map.hashFunc = hashFunc;
 	for(i = 0;i < 10;i++)
@@ -33,9 +34,13 @@ int put(HashMap *map, void *key, void *value){
 	DoubleList *list;
 	Data *data;
 	int bucketNumber;
-	bucketNumber = (map->hashFunc(key)) % 10;
+	bucketNumber = (map->hashFunc(key)) % map->capacity;
 	data = createHashNode(key, value);
 	list = (DoubleList*)ArrayList_get(map->buckets, bucketNumber);
+    if(get(map,key))
+        removeMap(map,key);
+    if(list->length >= 2)
+        rehash(map);
 	dList_insert(list, list->length, data);
 	return 1;
 }
@@ -45,7 +50,7 @@ void* get(HashMap *map, void *key){
     Data* data;
     int i;
     DoubleList* list;
-    int bucketNumber = map->hashFunc(key) % 10;
+    int bucketNumber = map->hashFunc(key) % map->capacity;
     list = (DoubleList*)ArrayList_get(map->buckets, bucketNumber);
     if(0 == list->length) return NULL;
     Node = (node*)list->head;
@@ -61,7 +66,7 @@ int removeMap(HashMap* map, void* key) {
     node* Node;
     Data* data;
     int i,index = 0;
-    int bucketNumber = map->hashFunc(key) % 10;
+    int bucketNumber = map->hashFunc(key) % map->capacity;
     DoubleList *list = (DoubleList*)ArrayList_get(map->buckets, bucketNumber);
     if(0 == list->length) return 0;
     Node = (node*)list->head;
@@ -80,19 +85,34 @@ int removeMap(HashMap* map, void* key) {
 }
 
 Iterator keys(HashMap *map){
-        Iterator it1;
-        Iterator it2;
-        Iterator result;
-        Data *data;
-        DoubleList list = dList_create();
-        it1 = ArrayList_getIterator(map->buckets);
-        while(it1.hasNext(&it1)){
-            it2 = dList_getIterator(it1.next(&it1));
-            while(it2.hasNext(&it2)){
-               data = it2.next(&it2);
-                dList_insert(&list, 0, data->key);
-            }
+    Iterator it1,it2,result;
+    Data *data;
+    DoubleList list = dList_create();
+    it1 = ArrayList_getIterator(map->buckets);
+    while(it1.hasNext(&it1)){
+        it2 = dList_getIterator(it1.next(&it1));
+        while(it2.hasNext(&it2)){
+           data = it2.next(&it2);
+           dList_insert(&list, list.length, data->key);
         }
-        result = dList_getIterator(&list);
-        return result;
+    }
+    result = dList_getIterator(&list);
+    return result;
+}
+
+void rehash(HashMap* map){
+    void *key,*value;
+    int i,resizeLength = map->capacity * 2;
+    Iterator Keys = keys(map);
+    for(i = map->capacity;i < resizeLength;i++){
+        ArrayList_add(map->buckets, malloc(sizeof(DoubleList)));
+        ArrayList_iterate(*(ArrayList*)map->buckets, createListForEachBucket);
+    }
+    map->capacity = resizeLength;    
+    while(Keys.hasNext(&Keys)){
+        key = Keys.next(&Keys);
+        value = get(map, key);
+        removeMap(map , key);
+        put(map, key, value);
+    }
 }

@@ -14,7 +14,7 @@ int hashFun(void *key){
 void test_add_an_element_to_hashmap(){
     void* data;
     int key1 = 1234, data1 = 1;
-    HashMap map = createHashmap(hashFun, compareKey);
+    HashMap map = createHashmap(hashFun, compareKey,10);
     ASSERT(put(&map,&key1 , &data1));
     data = get(&map, &key1);
     ASSERT(data == &data1);
@@ -24,7 +24,7 @@ void test_add_multiple_elements_to_hashmap(){
     int key1 = 1234, data1 = 1;
     int key2 = 1235, data2 = 2;
     int key3 = 1245, data3 = 3;
-    HashMap map = createHashmap(hashFun, compareKey);
+    HashMap map = createHashmap(hashFun, compareKey,10);
     ASSERT(put(&map,&key1 , &data1));
     data = get(&map, &key1);
     ASSERT(put(&map,&key2 , &data2));
@@ -39,7 +39,7 @@ void test_remove_element_from_hashmap(){
     int key1 = 1234, data1 = 1;
     int key2 = 1235, data2 = 2;
     int key3 = 1245, data3 = 3;
-    HashMap map = createHashmap(hashFun, compareKey);
+    HashMap map = createHashmap(hashFun, compareKey,10);
     ASSERT(put(&map,&key1 , &data1));
     data = get(&map, &key1);
     ASSERT(put(&map,&key2 , &data2));
@@ -54,7 +54,7 @@ void test_get_element_from_hashmap_after_removing(){
     int key1 = 1234, data1 = 1;
     int key2 = 1235, data2 = 2;
     int key3 = 1245, data3 = 3;
-    HashMap map = createHashmap(hashFun, compareKey);
+    HashMap map = createHashmap(hashFun, compareKey,10);
     ASSERT(put(&map,&key1 , &data1));
     data = get(&map, &key1);
     ASSERT(put(&map,&key2 , &data2));
@@ -73,14 +73,43 @@ void test_keys_of_hashmap_gives_all_keys_in_map(){
     int key2 = 1235, data2 = 2;
     int key3 = 1245, data3 = 3;
     Iterator it;
-    HashMap map = createHashmap(hashFun, compareKey);
+    HashMap map = createHashmap(hashFun, compareKey,10);
     ASSERT(put(&map,&key1 , &data1));
-    data = get(&map, &key1);
     ASSERT(put(&map,&key2 , &data2));
-    data = get(&map, &key2);
     ASSERT(put(&map,&key3 , &data3));
-    data = get(&map, &key3);
-    ASSERT(data == &data3);
-    keys(&map);
-    ASSERT(15388 == *(int*)it.next(&it));
+    it = keys(&map);
+    ASSERT(1234 == *(int*)it.next(&it));
+    ASSERT(1235 == *(int*)it.next(&it));
+    ASSERT(1245 == *(int*)it.next(&it));
+
+}
+void test_rehash_elements_to_hashmap(){
+    void* data;
+    Iterator it;
+    int key1 = 2, data1 = 1;
+    int key2 = 3, data2 = 2;
+    int key3 = 4, data3 = 3;
+    int key4 = 5, data4 = 4;
+    int key5 = 14, data5 = 5;
+    int key6 = 24, data6 = 6;
+    int key7 = 6, data7 = 7;
+    HashMap map = createHashmap(hashFun, compareKey,10);
+    ASSERT(put(&map,&key1 , &data1));
+    ASSERT(put(&map,&key2 , &data2));
+    ASSERT(put(&map,&key3 , &data3));
+    ASSERT(put(&map,&key4 , &data4));
+    ASSERT(put(&map,&key5 , &data5));
+    ASSERT(put(&map,&key6 , &data6));
+    ASSERT(put(&map,&key7 , &data7));
+    it = keys(&map);
+    it = keys(&map);
+    
+    ASSERT(2 == *(int*)it.next(&it));
+    ASSERT(3 == *(int*)it.next(&it));
+    ASSERT(4 == *(int*)it.next(&it));
+    ASSERT(24 == *(int*)it.next(&it));
+    ASSERT(5 == *(int*)it.next(&it));
+    ASSERT(6 == *(int*)it.next(&it));
+    ASSERT(14 == *(int*)it.next(&it));
+
 }
